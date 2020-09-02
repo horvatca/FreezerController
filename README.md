@@ -58,5 +58,10 @@ crontab - l
 
 
 
+to push updates you make toyour repo
+git add .
+git commit -m 'your message'
+git push
+
 
 

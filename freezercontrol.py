@@ -27,26 +27,26 @@ try:
     GPIO.setup(heatingLEDpin, GPIO.OUT)
     
     #set minimum and max booch temp in deg F
-    #heater turns on a min temp and off at max temp
+    #heater turns on a min temp and off at max temp  FIX THIS LINE
     minTemp = 79
     maxTemp = 80
     
-    #set heater realy pin number
-    heaterRelayPin = 15
+    #set power realy pin number
+    powerRelayPin = 15
     #I would prefer a realy that was default off on configuring as OUTPUT, but that is a future upgrade.....
-    GPIO.setup(heaterRelayPin, GPIO.OUT)
+    GPIO.setup(powerRelayPin, GPIO.OUT)
     
     #setup the output log file
-    #Open boochlog.txt in the home directory inappend mode. If it does not exist, create it.
-    log = open("/home/pi/boochlog.txt", "a+")
+    #Open freezerlog.txt in the home directory inappend mode. If it does not exist, create it.
+    log = open("/home/pi/freezerlog.txt", "a+")
     
-    #setup the heater state perisistant value file
+    #setup the freezer state perisistant value file
     #using a file instead of pickle or shelve because easier to read outside of program
-    heaterStatePersist = open("/home/pi/heaterStatePersist.txt", "a")
-    heaterStatePersist.close()
+    freezerStatePersist = open("/home/pi/freezerStatePersist.txt", "a")
+    freezerStatePersist.close()
 
-    with open("/home/pi/heaterStatePersist.txt", "r") as heaterStatePersist:
-        previousHeaterState = heaterStatePersist.read()
+    with open("/home/pi/freezerStatePersist.txt", "r") as freezerStatePersist:
+        previousFreezerState = freezerStatePersist.read()
 
 
     ##############################################
@@ -98,18 +98,18 @@ try:
     def heatingLEDoff():
         GPIO.output(heatingLEDpin,False)
         
-    #functions to control the heater state and persist the state for reading by future executions
+    #functions to control the power state and persist the state for reading by future executions
         #I would prefer a relsy that was default off on configuring as OUTPUT, but that is a future upgrade wih different hardware.....
     def setHeaterState(state):
         if state == "ON":
-            GPIO.output(heaterRelayPin, False) #False turns the relay on
-            with open("/home/pi/heaterStatePersist.txt", "w") as heaterStatePersist:
-                heaterStatePersist.write('ON')
+            GPIO.output(powerRelayPin, False) #False turns the relay on
+            with open("/home/pi/freezerStatePersist.txt", "w") as freezerStatePersist:
+                freezerStatePersist.write('ON')
             heatingLEDon()
         elif state == "OFF":
-            GPIO.output(heaterRelayPin, True) #False turns the relay off
-            with open("/home/pi/heaterStatePersist.txt", "w") as heaterStatePersist:
-                heaterStatePersist.write('OFF')
+            GPIO.output(powerRelayPin, True) #False turns the relay off
+            with open("/home/pi/freezerStatePersist.txt", "w") as freezerStatePersist:
+                freezerStatePersist.write('OFF')
             heatingLEDoff()
         else:
             print("Invalid heater state. Aborting.")
@@ -153,12 +153,12 @@ try:
         currentTemp = degCtoF(read_temp()) + thermAdjust
         
         #get current state of heater (to let it coast down to the min temp if below min and max temps
-        print(str(previousHeaterState))        
+        print(str(previousFreezerState))        
         
         #error check the temp - abort if crazy reading
         crazyCheckResult = crazyCheckTemp(currentTemp)
         
-        newHeaterState=str(previousHeaterState)
+        newHeaterState=str(previousFreezerState)
         if currentTemp <= minTemp:
             newHeaterState = "ON"
         elif currentTemp >= maxTemp:
