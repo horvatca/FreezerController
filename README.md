@@ -44,7 +44,7 @@ git clone https://github.com/horvatca/FreezerController.git
 
 Make the script executable. Execute this command in the folder the script is in, hopefully /home/pi/FreezerController
 ````console
-Chmod +x /home/pi/FreezerController/freezercontrol.py
+chmod +x /home/pi/FreezerController/freezermonitor.py
 ````
 
 Make a cron job to execute the script every minute:
@@ -54,7 +54,7 @@ crontab -e
 ````
 Add this line to the cron schedule:
 ````console
-* * * * * /home/pi/FreezerController/freezercontrol.py
+* * * * * /home/pi/FreezerController/freezermonitor.py
 ````
 Check to make sure it took with:
 crontab - l
