@@ -105,7 +105,7 @@ try:
     currentTemp = degCtoF(read_temp()) + thermAdjust
    
     #assemble the message to log
-    message = host + ', ' + timestamp + ', ' + str(currentTemp) + ', ' + ', CPU Temp: ' + cpuTemp + '\n'
+    message = host + ', Temp: ' + str(currentTemp) + ', Timestamp: '+ timestamp + ', CPU Temp: ' + cpuTemp + '\n'
     
     print(message)
     log.write(message)
